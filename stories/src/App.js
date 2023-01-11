@@ -19,15 +19,29 @@ const initialStories = [
   },
 ];
 
-const getAsyncStories = () => 
-  new Promise((resolve) => 
+const getAsyncStories = () =>
+  new Promise((resolve) =>
     setTimeout(
-      () => resolve({data: {stories: initialStories}}), 2000
+      () => resolve({ data: { stories: initialStories } }),
+      2000
     )
   );
 
-const useSemiPersistentState = (key, initialState) => {
+const storiesReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_STORIES':
+      return action.payload;
+    case 'REMOVE_STORY':
+      return state.filter(
+        (story) => action.payload.objectID !== story.objectID
+      );
+    default:
+      throw new Error();
+  }
+};
 
+
+const useStorageState = (key, initialState) => {
   const [value, setValue] = React.useState(
     localStorage.getItem(key) || initialState
   );
@@ -37,24 +51,19 @@ const useSemiPersistentState = (key, initialState) => {
   }, [value, key]);
 
   return [value, setValue];
-
-}
+};
 
 const App = () => {
-
-  const [searchTerm, setSearchTerm] = useSemiPersistentState(
-    'search', 'React'
+  const [searchTerm, setSearchTerm] = useStorageState(
+    'search',
+    'React'
   );
 
-  const handleRemoveStory = item => {
-    const newStories = stories.filter(
-      story => item.objectID !== story.objectID
-    );
+  const [stories, dispatchStories] = React.useReducer(
+    storiesReducer,
+    []
+  );
 
-    setStories(newStories);
-  }
-
-  const [stories, setStories] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
@@ -62,91 +71,105 @@ const App = () => {
     setIsLoading(true);
 
     getAsyncStories()
-      .then(result => {
-        setStories(result.data.stories);
+      .then((result) => {
+        dispatchStories({
+          type: 'SET_STORIES',
+          payload: result.data.stories,
+        });
         setIsLoading(false);
       })
       .catch(() => setIsError(true));
   }, []);
 
-  const handleSearch = event => {
-    setSearchTerm(event.target.value)
+  const handleRemoveStory = (item) => {
+    dispatchStories({
+      type: 'REMOVE_STORY',
+      payload: item,
+    });
   };
 
-  const searchedStories = stories.filter(story => 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const searchedStories = stories.filter((story) =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  
+  );
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
       <InputWithLabel
         id="search"
-        label="Search" 
         value={searchTerm}
-        isFocused 
-        onInputChange={handleSearch} 
+        isFocused
+        onInputChange={handleSearch}
       >
-        Search
+        <strong>Search:</strong>
       </InputWithLabel>
 
-      <p>{searchTerm}</p>
-
-      {isError && <p>Something went wrong... </p>}
-      
       <hr />
+
+      {isError && <p>Something went wrong ...</p>}
+
       {isLoading ? (
-        <p>Loading...</p>
-        ) : (
-        <List list={searchedStories} 
-              onRemoveItem={handleRemoveStory}/>
-        )}
+        <p>Loading ...</p>
+      ) : (
+        <List
+          list={searchedStories}
+          onRemoveItem={handleRemoveStory}
+        />
+      )}
     </div>
   );
-}
+};
 
-
-const InputWithLabel = ({ 
-  id, 
-  value, 
-  type = 'text', 
-  onInputChange, 
+const InputWithLabel = ({
+  id,
+  value,
+  type = 'text',
+  onInputChange,
   isFocused,
-  children, 
+  children,
 }) => {
+  const inputRef = React.useRef();
 
-    const inputRef = React.useRef();
+  React.useEffect(() => {
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFocused]);
 
-    React.useEffect(() => {
-      if (isFocused && inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, [isFocused])
-
-    return (
-      <>
-        <label htmlFor={id}>{children}</label>
-        &nbsp;
-        <input
-          ref={inputRef}
-          id={id}
-          type={type}
-          value={value}
-          onChange={onInputChange}
-        />
-      </>
-    );
-}
-
-
-const List = ({ list, onRemoveItem }) =>
-  list.map(item => (
-    <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />)
+  return (
+    <>
+      <label htmlFor={id}>{children}</label>
+      &nbsp;
+      <input
+        ref={inputRef}
+        id={id}
+        type={type}
+        value={value}
+        onChange={onInputChange}
+      />
+    </>
   );
+};
+
+const List = ({ list, onRemoveItem }) => (
+  <ul>
+    {list.map((item) => (
+      <Item
+        key={item.objectID}
+        item={item}
+        onRemoveItem={onRemoveItem}
+      />
+    ))}
+  </ul>
+);
 
 const Item = ({ item, onRemoveItem }) => (
-  <div>
+  <li>
     <span>
       <a href={item.url}>{item.title}</a>
     </span>
@@ -158,7 +181,7 @@ const Item = ({ item, onRemoveItem }) => (
         Dismiss
       </button>
     </span>
-  </div>
+  </li>
 );
 
 export default App;
