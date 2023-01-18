@@ -205,4 +205,29 @@ const SearchForm = ({
 </form>
 )
 
+
+// Class Component
+// class InputClass extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {searchingFor: ''}
+//     this.onChange = this.onChange.bind(this)
+//   }
+
+//   onChange(event) {
+//     this.setState({searchingFor: event.target.value})
+//   }
+//   render() {
+//     const { searchingFor } = this.state
+//     return(
+//       <div>
+//         <p>{searchingFor}</p>
+//         <input 
+//           type='text'
+//           onChange={this.onChange}/>
+//       </div>
+//   )}
+// }
+
+
 export default App;
