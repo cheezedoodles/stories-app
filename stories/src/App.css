@@ -1,7 +1,7 @@
 .container {
   height: 100vw;
   padding: 20px;
-
+  
   background: #83a4d4;
   background: linear-gradient(to left, #b6fbff, #83a4d4);
 
@@ -50,5 +50,27 @@
 }
 
 .button_large {
-  padding: 10px;
+  padding: 5px;
 }
+
+.search-form {
+  padding: 10px 0 20px 0;
+  display: center;
+  align-items: baseline;
+}
+
+.label {
+  border-top: 1px solid #171212;
+  border-left: 1px solid #171212;
+  padding-left: 24px;
+  font-size: 24px;
+}
+
+.input {
+  border: none;
+  border-bottom: 1px solid #171212;
+  background-color: transparent;
+  
+  font-size: 24px;
+}
+

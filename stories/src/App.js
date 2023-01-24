@@ -106,7 +106,6 @@ const App = () => {
   return (
     <div className='container'>
       <h1 className='headline-primary'>My Hacker Stories</h1>
-      <p>{searchTerm}</p>
       <SearchForm 
         searchTerm={searchTerm}
         onSearchInput={handleSearchInput}
@@ -207,7 +206,7 @@ const SearchForm = ({
   >
     <strong>Search:</strong>
   </InputWithLabel>
-  
+  &nbsp;
   <button 
     type="submit" 
     disabled={!searchTerm} 
