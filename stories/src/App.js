@@ -110,6 +110,7 @@ const App = () => {
         searchTerm={searchTerm}
         onSearchInput={handleSearchInput}
         onSearchSubmit={handleSearchSubmit}
+        searchFormClassName='button_small'
       />
 
       {stories.isError && <p>Something went wrong ...</p>}
@@ -196,6 +197,7 @@ const SearchForm = ({
   searchTerm,
   onSearchInput,
   onSearchSubmit,
+  searchFormClassName
 }) => (
   <form onSubmit={onSearchSubmit} className='search-form'>
   <InputWithLabel
@@ -210,7 +212,7 @@ const SearchForm = ({
   <button 
     type="submit" 
     disabled={!searchTerm} 
-    className='button button_large'
+    className={`button ${searchFormClassName}`}
   >
     Submit
   </button>
