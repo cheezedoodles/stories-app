@@ -115,8 +115,11 @@ const App = () => {
     event.preventDefault();
   }
 
-  const sumComments = getSumComments(stories);
-
+  const sumComments = React.useMemo(
+    () => getSumComments(stories),
+    [stories]
+  );
+  
   return (
     <div className='container'>
       <h1 className='headline-primary'>
