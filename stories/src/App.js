@@ -38,6 +38,12 @@ const storiesReducer = (state, action) => {
   }
 };
 
+const getSumComments = (stories) => {
+  return stories.data.reduce(
+    (result, value) => result + value.num_comments,
+    0
+  );
+};
 
 const useStorageState = (key, initialState) => {
   const isMounted = React.useRef(false)
@@ -109,9 +115,13 @@ const App = () => {
     event.preventDefault();
   }
 
+  const sumComments = getSumComments(stories);
+
   return (
     <div className='container'>
-      <h1 className='headline-primary'>My Hacker Stories</h1>
+      <h1 className='headline-primary'>
+        My Hacker Stories with {sumComments} comments.
+      </h1>
       <SearchForm 
         searchTerm={searchTerm}
         onSearchInput={handleSearchInput}
