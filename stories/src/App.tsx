@@ -25,6 +25,13 @@ type ListProps = {
   onRemoveItem: (item: Story) => void; 
 }
 
+type SearchFormProps = {
+  searchTerm: string;
+  onSearchInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  searchFormClassName: string;
+}
+
 type ItemProps = {
   item: Story;
   onRemoveItem: (item: Story) => void;
@@ -44,7 +51,7 @@ type StoriesFetchFailureAction = {
 }
 
 type StoriesRemoveAction = {
-  type: 'STORIES_FETCH_INIT';
+  type: 'REMOVE_STORY';
   payload: Story;
 }
 
@@ -94,7 +101,7 @@ const storiesReducer = (
   }
 };
 
-const getSumComments = (stories) => {
+const getSumComments = (stories: Stories) => {
   return stories.data.reduce(
     (result, value) => result + value.num_comments,
     0
@@ -164,11 +171,15 @@ const App = () => {
     });
   }, []);
 
-  const handleSearchInput = (event) => {
+  const handleSearchInput = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = (
+    event: React.ChangeEvent<HTMLFormElement>
+  ) => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
 
     event.preventDefault();
@@ -273,7 +284,7 @@ const Item: React.FC<ItemProps> = ({ item, onRemoveItem }) => (
   </li>
 );
 
-const SearchForm = ({
+const SearchForm: React.FC<SearchFormProps> = ({
   searchTerm,
   onSearchInput,
   onSearchSubmit,
