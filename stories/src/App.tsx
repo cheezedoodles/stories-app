@@ -3,9 +3,6 @@ import axios from 'axios';
 
 import './App.css';
 
-const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
-
-
 type Story = {
   objectID: string;
   url: string;
@@ -23,11 +20,6 @@ type StoriesState = {
   isError: boolean;
 }
 
-type StoriesAction = {
-  type: string;
-  payload: any;
-}
-
 type ListProps = {
   list: Stories;
   onRemoveItem: (item: Story) => void; 
@@ -37,6 +29,35 @@ type ItemProps = {
   item: Story;
   onRemoveItem: (item: Story) => void;
 }
+
+type StoriesFetchInitAction = {
+  type: 'STORIES_FETCH_INIT';
+}
+
+type StoriesFetchSuccessAction = {
+  type: 'STORIES_FETCH_SUCCESS';
+  payload: Stories;
+}
+
+type StoriesFetchFailureAction = {
+  type: 'STORIES_FETCH_FAILURE';
+}
+
+type StoriesRemoveAction = {
+  type: 'STORIES_FETCH_INIT';
+  payload: Story;
+}
+
+type StoriesAction = 
+  StoriesFetchInitAction
+  | StoriesFetchSuccessAction
+  | StoriesFetchFailureAction
+  | StoriesRemoveAction;
+
+
+
+
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 const storiesReducer = (
   state: StoriesState, 
