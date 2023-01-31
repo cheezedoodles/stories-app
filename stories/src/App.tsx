@@ -15,6 +15,18 @@ type Story = {
   points: number;
 };
 
+type Stories = Story[];
+
+type ListProps = {
+  list: Stories;
+  onRemoveItem: (item: Story) => void; 
+}
+
+type ItemProps = {
+  item: Story;
+  onRemoveItem: (item: Story) => void;
+}
+
 const storiesReducer = (state, action) => {
   switch (action.type) {
     case 'STORIES_FETCH_INIT':
@@ -110,7 +122,7 @@ const App = () => {
     handleFetchStories();
   }, [handleFetchStories]);
 
-  const handleRemoveStory = React.useCallback((item) => {
+  const handleRemoveStory = React.useCallback((item: Story) => {
     dispatchStories({
       type: 'REMOVE_STORY',
       payload: item,
@@ -192,7 +204,7 @@ const InputWithLabel = ({
   );
 };
 
-const List = React.memo(
+const List: React.FC<ListProps> = React.memo(
     ({ list, onRemoveItem }) => (
       <ul>
         {list.map((item) => (
@@ -206,13 +218,7 @@ const List = React.memo(
     )
 );
 
-const Item = ({
-  item, 
-  onRemoveItem
-}: {
-  item: Story;
-  onRemoveItem: (item: Story) => void;
-}) => (
+const Item: React.FC<ItemProps> = ({ item, onRemoveItem }) => (
   <li className='item'>
     <span style={{ width: '40%' }}>
       <a href={item.url}>{item.title} </a>
