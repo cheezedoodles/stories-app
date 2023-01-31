@@ -17,6 +17,17 @@ type Story = {
 
 type Stories = Story[];
 
+type StoriesState = {
+  data: Stories;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+type StoriesAction = {
+  type: string;
+  payload: any;
+}
+
 type ListProps = {
   list: Stories;
   onRemoveItem: (item: Story) => void; 
@@ -27,7 +38,10 @@ type ItemProps = {
   onRemoveItem: (item: Story) => void;
 }
 
-const storiesReducer = (state, action) => {
+const storiesReducer = (
+  state: StoriesState, 
+  action: StoriesAction
+) => {
   switch (action.type) {
     case 'STORIES_FETCH_INIT':
       return {
