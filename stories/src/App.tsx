@@ -6,6 +6,15 @@ import './App.css';
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 
+type Story = {
+  objectID: string;
+  url: string;
+  title: string;
+  author: string;
+  num_comments: number;
+  points: number;
+};
+
 const storiesReducer = (state, action) => {
   switch (action.type) {
     case 'STORIES_FETCH_INIT':
@@ -45,7 +54,10 @@ const getSumComments = (stories) => {
   );
 };
 
-const useStorageState = (key, initialState) => {
+const useStorageState = (
+  key: string, 
+  initialState: string
+): [string, (newValue: string) => void] => {
   const isMounted = React.useRef(false)
 
   const [value, setValue] = React.useState(
@@ -194,7 +206,13 @@ const List = React.memo(
     )
 );
 
-const Item = ({ item, onRemoveItem }) => (
+const Item = ({
+  item, 
+  onRemoveItem
+}: {
+  item: Story;
+  onRemoveItem: (item: Story) => void;
+}) => (
   <li className='item'>
     <span style={{ width: '40%' }}>
       <a href={item.url}>{item.title} </a>
