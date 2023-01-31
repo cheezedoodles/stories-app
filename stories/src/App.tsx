@@ -18,42 +18,51 @@ type StoriesState = {
   data: Stories;
   isLoading: boolean;
   isError: boolean;
-}
+};
 
 type ListProps = {
   list: Stories;
   onRemoveItem: (item: Story) => void; 
-}
+};
 
 type SearchFormProps = {
   searchTerm: string;
   onSearchInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSearchSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   searchFormClassName: string;
-}
+};
+
+type InputWithLabelProps = {
+  id: string;
+  value: string;
+  type?: string;
+  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isFocused?: boolean;
+  children: React.ReactNode;
+};
 
 type ItemProps = {
   item: Story;
   onRemoveItem: (item: Story) => void;
-}
+};
 
 type StoriesFetchInitAction = {
   type: 'STORIES_FETCH_INIT';
-}
+};
 
 type StoriesFetchSuccessAction = {
   type: 'STORIES_FETCH_SUCCESS';
   payload: Stories;
-}
+};
 
 type StoriesFetchFailureAction = {
   type: 'STORIES_FETCH_FAILURE';
-}
+};
 
 type StoriesRemoveAction = {
   type: 'REMOVE_STORY';
   payload: Story;
-}
+};
 
 type StoriesAction = 
   StoriesFetchInitAction
@@ -101,7 +110,7 @@ const storiesReducer = (
   }
 };
 
-const getSumComments = (stories: Stories) => {
+const getSumComments = (stories: StoriesState ) => {
   return stories.data.reduce(
     (result, value) => result + value.num_comments,
     0
@@ -178,7 +187,7 @@ const App = () => {
   };
 
   const handleSearchSubmit = (
-    event: React.ChangeEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>
   ) => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
 
@@ -216,7 +225,7 @@ const App = () => {
   );
 };
 
-const InputWithLabel = ({
+const InputWithLabel: React.FC<InputWithLabelProps> = ({
   id,
   value,
   type = 'text',
@@ -224,7 +233,7 @@ const InputWithLabel = ({
   isFocused,
   children,
 }) => {
-  const inputRef = React.useRef();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (isFocused && inputRef.current) {
