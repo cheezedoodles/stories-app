@@ -344,3 +344,5 @@ const SearchForm: React.FC<SearchFormProps> = ({
 // }
 
 export default App;
+
+export { storiesReducer, SearchForm, InputWithLabel, List, Item}
