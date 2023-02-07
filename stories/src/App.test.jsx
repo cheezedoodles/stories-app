@@ -26,7 +26,16 @@ const storyTwo = {
   objectID: 1,
 };
 
-const stories = [storyOne, storyTwo];
+const storyThree = {
+  title: 'Jest',
+  url: 'https://jest.org/',
+  author: 'Reallyidk',
+  num_comments: 2,
+  points: 5,
+  objectID: 2,
+};
+
+const stories = [storyOne, storyTwo, storyThree];
 
 describe('storiesReducer', () => {
   it('removes a story from all stories', () => {
@@ -36,11 +45,26 @@ describe('storiesReducer', () => {
     const newState = storiesReducer(state, action);
 
     const expectedState = {
-      data: [storyTwo],
+      data: [storyTwo, storyThree],
       isLoading: false,
       isError: false,
     };
 
     expect(newState).toStrictEqual(expectedState);
   });
+
+  it('adds stories', () => {
+    const action = { type: 'STORIES_FETCH_SUCCESS', payload: stories};
+    const state = { data: {}, isLoading: false, isError: false }
+    
+    const newState = storiesReducer(state, action);
+
+    const expectedState = {
+      data: stories,
+      isLoading: false,
+      isError: false,
+    };
+
+    expect(newState).toStrictEqual(expectedState);
+  })
 });
