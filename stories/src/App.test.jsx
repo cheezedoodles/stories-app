@@ -182,4 +182,27 @@ describe('App', () => {
       expect(screen.getByText(/went wrong/)).toBeInTheDocument()
     }
   })
+
+  it('removes a story', async () => {
+    const api_call = Promise.resolve({
+      data: {
+        hits: stories,
+      },
+    })
+
+    axios.get.mockImplementationOnce(() => api_call)
+
+    render(<App />)
+
+    await waitFor(async () => await api_call)
+
+    expect(screen.getAllByText('Dismiss').length).toBe(3)
+    expect(screen.getByText('Jordan Walke')).toBeInTheDocument()
+
+    fireEvent.click(screen.getAllByText('Dismiss')[0])
+
+    expect(screen.getAllByText('Dismiss').length).toBe(2)
+    expect(screen.queryByText('Jordan Walke')).toBeNull()
+
+  })
 })
