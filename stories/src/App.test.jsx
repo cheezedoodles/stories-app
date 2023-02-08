@@ -160,5 +160,12 @@ describe('App', () => {
     await waitFor(async () => await api_call)
 
     expect(screen.queryByText(/Loading/)).toBeNull()
+    
+    expect(screen.getByText('React')).toBeInTheDocument()
+    expect(screen.getByText('Redux')).toBeInTheDocument()
+    expect(screen.getByText('Jest')).toBeInTheDocument()
+    expect(screen.getAllByText('Dismiss').length).toBe(3)
   })
+
+  
 })
