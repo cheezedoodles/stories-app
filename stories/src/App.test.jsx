@@ -1,5 +1,5 @@
+import axios from 'axios';
 import { describe, it, expect, vi } from 'vitest';
-
 import App, {
   storiesReducer,
   Item,
@@ -14,6 +14,9 @@ import {
   fireEvent,
   waitFor,
 } from '@testing-library/react';
+
+
+vi.mock('axios')
 
 const storyOne = {
   title: 'React',
@@ -137,5 +140,25 @@ describe('SearchForm', () => {
     fireEvent.submit(screen.getByRole('button'))
 
     expect(searchFormProps.onSearchSubmit).toHaveBeenCalledOnce()
+  })
+})
+
+describe('App', () => {
+  it('succeeds fetching data', async () => {
+    const api_call = Promise.resolve({
+      data: {
+        hits: stories,
+      },
+    })
+
+    axios.get.mockImplementationOnce(() => api_call);
+
+    render(<App />)
+
+    expect(screen.queryByText(/Loading/)).toBeInTheDocument()
+
+    await waitFor(async () => await api_call)
+
+    expect(screen.queryByText(/Loading/)).toBeNull()
   })
 })
