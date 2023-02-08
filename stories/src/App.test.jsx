@@ -85,4 +85,9 @@ describe('Item', () => {
       'https://reactjs.org/'
     )
   })
+  it('renders a clickable dismiss button', () => {
+    render(<Item item={storyOne} />)
+
+    expect(screen.getByRole('button')).toBeInTheDocument()
+  })
 })
