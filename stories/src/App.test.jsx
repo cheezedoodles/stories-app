@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import App, {
   storiesReducer,
@@ -85,9 +85,21 @@ describe('Item', () => {
       'https://reactjs.org/'
     )
   })
+
   it('renders a clickable dismiss button', () => {
     render(<Item item={storyOne} />)
 
     expect(screen.getByRole('button')).toBeInTheDocument()
   })
+
+  it('clicking the dismiss button calls the callback handler', () => {
+    const handleRemoveItem = vi.fn()
+
+    render(<Item item={storyOne} onRemoveItem={handleRemoveItem} />)
+
+    fireEvent.click(screen.getByRole('button'))
+
+    expect(handleRemoveItem).toHaveBeenCalledTimes(1)
+  })
+
 })
