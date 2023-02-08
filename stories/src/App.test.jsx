@@ -103,3 +103,18 @@ describe('Item', () => {
   })
 
 })
+
+describe('SearchForm', () => {
+  const searchFormProps = {
+    searchTerm: 'React',
+    onSearchInput: vi.fn(),
+    onSearchSubmit: vi.fn(),
+    searchFormClassName: 'button_small'
+  }
+
+  it('renders the input field with its value', () => {
+    render(<SearchForm {...searchFormProps} />)
+
+    expect(screen.getByDisplayValue('React')).toBeInTheDocument()
+  })
+})
