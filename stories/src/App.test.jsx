@@ -130,4 +130,12 @@ describe('SearchForm', () => {
 
     expect(searchFormProps.onSearchInput).toHaveBeenCalledOnce();
   })
+
+  it('calls onSearchSubmit on button submit click', () => {
+    render(<SearchForm {...searchFormProps} />)
+
+    fireEvent.submit(screen.getByRole('button'))
+
+    expect(searchFormProps.onSearchSubmit).toHaveBeenCalledOnce()
+  })
 })
