@@ -167,5 +167,19 @@ describe('App', () => {
     expect(screen.getAllByText('Dismiss').length).toBe(3)
   })
 
-  
+  it('fails fetching data', async () => {
+    const api_call = Promise.reject()
+
+    axios.get.mockImplementationOnce(() => api_call)
+
+    render(<App />)
+
+    expect(screen.getByText(/Loading/)).toBeInTheDocument()
+    try {
+      await waitFor(async () => await api_call)
+    } catch (error) {
+      expect(screen.queryByText(/Loading/)).toBeNull()
+      expect(screen.getByText(/went wrong/)).toBeInTheDocument()
+    }
+  })
 })
