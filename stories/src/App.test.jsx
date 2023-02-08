@@ -118,5 +118,16 @@ describe('SearchForm', () => {
     expect(screen.getByDisplayValue('React')).toBeInTheDocument()
     
     expect(screen.getByLabelText(/Search/)).toBeInTheDocument()
+    
+  })
+
+  it('calls onSearchInput on input field change', () => {
+    render(<SearchForm {...searchFormProps} />)
+
+    fireEvent.change(screen.getByDisplayValue('React'), {
+      target: {value: 'Redux'},
+    })
+
+    expect(searchFormProps.onSearchInput).toHaveBeenCalledOnce();
   })
 })
