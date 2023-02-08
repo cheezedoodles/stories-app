@@ -155,7 +155,7 @@ describe('App', () => {
 
     render(<App />)
 
-    expect(screen.queryByText(/Loading/)).toBeInTheDocument()
+    expect(screen.getByText(/Loading/)).toBeInTheDocument()
 
     await waitFor(async () => await api_call)
 
