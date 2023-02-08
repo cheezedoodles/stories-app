@@ -8,6 +8,12 @@ import App, {
   InputWithLabel,
 } from './App';
 
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+} from '@testing-library/react';
 
 const storyOne = {
   title: 'React',
@@ -68,3 +74,15 @@ describe('storiesReducer', () => {
     expect(newState).toStrictEqual(expectedState);
   })
 });
+
+describe('Item', () => {
+  it('renders all properties', () => {
+    render(<Item item={storyOne} />)
+
+    expect(screen.getByText('Jordan Walke')).toBeInTheDocument();
+    expect(screen.getByText('React')).toHaveAttribute(
+      'href',
+      'https://reactjs.org/'
+    )
+  })
+})
