@@ -116,5 +116,7 @@ describe('SearchForm', () => {
     render(<SearchForm {...searchFormProps} />)
 
     expect(screen.getByDisplayValue('React')).toBeInTheDocument()
+    
+    expect(screen.getByLabelText(/Search/)).toBeInTheDocument()
   })
 })
