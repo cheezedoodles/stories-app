@@ -3,6 +3,10 @@ import axios from 'axios';
 
 import './App.css';
 
+import { SearchForm } from './SearchForm'
+import { List } from './List'
+
+
 type Story = {
   objectID: string;
   url: string;
@@ -20,31 +24,6 @@ type StoriesState = {
   isError: boolean;
 };
 
-type ListProps = {
-  list: Stories;
-  onRemoveItem: (item: Story) => void; 
-};
-
-type SearchFormProps = {
-  searchTerm: string;
-  onSearchInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSearchSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  searchFormClassName: string;
-};
-
-type InputWithLabelProps = {
-  id: string;
-  value: string;
-  type?: string;
-  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  isFocused?: boolean;
-  children: React.ReactNode;
-};
-
-type ItemProps = {
-  item: Story;
-  onRemoveItem: (item: Story) => void;
-};
 
 type StoriesFetchInitAction = {
   type: 'STORIES_FETCH_INIT';
@@ -71,9 +50,8 @@ type StoriesAction =
   | StoriesRemoveAction;
 
 
-
-
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
+
 
 const storiesReducer = (
   state: StoriesState, 
@@ -225,100 +203,6 @@ const App = () => {
   );
 };
 
-const InputWithLabel: React.FC<InputWithLabelProps> = ({
-  id,
-  value,
-  type = 'text',
-  onInputChange,
-  isFocused,
-  children,
-}) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    if (isFocused && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isFocused]);
-
-  return (
-    <>
-      <label htmlFor={id} className='label'>
-        {children}
-      </label>
-      &nbsp;
-      <input
-        ref={inputRef}
-        id={id}
-        type={type}
-        value={value}
-        onChange={onInputChange}
-        className='input'
-      />
-    </>
-  );
-};
-
-const List: React.FC<ListProps> = React.memo(
-    ({ list, onRemoveItem }) => (
-      <ul>
-        {list.map((item) => (
-          <Item
-            key={item.objectID}
-            item={item}
-            onRemoveItem={onRemoveItem}
-          />
-        ))}
-      </ul>
-    )
-);
-
-const Item: React.FC<ItemProps> = ({ item, onRemoveItem }) => (
-  <li className='item'>
-    <span style={{ width: '40%' }}>
-      <a href={item.url}>{item.title} </a>
-    </span>
-    <span style={{ width: '30%' }}>{item.author} </span>
-    <span style={{ width: '10%' }}>{item.num_comments} </span>
-    <span style={{ width: '10%' }}>{item.points} </span>
-    <span style={{ width: '10%' }}>
-      <button 
-        type="button" 
-        onClick={() => onRemoveItem(item)}
-        className='button button_small'
-      >
-        Dismiss
-      </button>
-    </span>
-  </li>
-);
-
-const SearchForm: React.FC<SearchFormProps> = ({
-  searchTerm,
-  onSearchInput,
-  onSearchSubmit,
-  searchFormClassName
-}) => (
-  <form onSubmit={onSearchSubmit} className='search-form'>
-  <InputWithLabel
-    id="search"
-    value={searchTerm}
-    isFocused
-    onInputChange={onSearchInput}
-  >
-    <strong>Search:</strong>
-  </InputWithLabel>
-  &nbsp;
-  <button 
-    type="submit" 
-    disabled={!searchTerm} 
-    className={`button ${searchFormClassName}`}
-  >
-    Submit
-  </button>
-</form>
-)
-
 
 // Class Component
 // class InputClass extends React.Component {
@@ -345,4 +229,4 @@ const SearchForm: React.FC<SearchFormProps> = ({
 
 export default App;
 
-export { storiesReducer, SearchForm, InputWithLabel, List, Item}
+export { storiesReducer }

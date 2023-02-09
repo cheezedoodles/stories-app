@@ -1,12 +1,8 @@
 import axios from 'axios';
 import { describe, it, expect, vi } from 'vitest';
-import App, {
-  storiesReducer,
-  Item,
-  List,
-  SearchForm,
-  InputWithLabel,
-} from './App';
+import App, { storiesReducer } from './App';
+import { SearchForm } from './SearchForm';
+import { Item } from './List'
 
 import {
   render,
