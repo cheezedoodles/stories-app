@@ -42,13 +42,18 @@ const SORTS: sortsMap= {
 const List: React.FC<ListProps> = React.memo(
   ({ list, onRemoveItem }) => {
 
-    const [sort, setSort] = React.useState('NONE')
+    const [sort, setSort] = React.useState({
+      sortKey: 'NONE',
+      isReverse: false,
+    })
 
     const handleSort = (sortKey: SortKey) => {
-      setSort(sortKey)
+      const isReverse = sort.sortKey === sortKey && !sort.isReverse
+      
+      setSort({ sortKey: sortKey, isReverse: isReverse })
     }
 
-    const sortFunction = SORTS[sort as keyof sortsMap]
+    const sortFunction = SORTS[sort.sortKey as keyof sortsMap]
     const sortedList = sortFunction(list)
 
     return (
