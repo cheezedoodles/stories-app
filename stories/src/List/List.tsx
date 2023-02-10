@@ -43,7 +43,7 @@ const List: React.FC<ListProps> = React.memo(
 );
 
 const Item: React.FC<ItemProps> = ({ item, onRemoveItem }) => (
-  <li className='item'>
+  <li className='item' style={{ display: 'flex' }}>
     <span style={{ width: '40%' }}>
       <a href={item.url}>{item.title} </a>
     </span>
