@@ -50,11 +50,13 @@ const List: React.FC<ListProps> = React.memo(
     const handleSort = (sortKey: SortKey) => {
       const isReverse = sort.sortKey === sortKey && !sort.isReverse
       
-      setSort({ sortKey: sortKey, isReverse: isReverse })
+      setSort({ sortKey, isReverse })
     }
 
     const sortFunction = SORTS[sort.sortKey as keyof sortsMap]
-    const sortedList = sortFunction(list)
+    const sortedList = sort.isReverse
+      ? sortFunction(list).reverse()
+      : sortFunction(list)
 
     return (
     <ul>
