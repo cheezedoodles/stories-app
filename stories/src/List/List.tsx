@@ -1,14 +1,13 @@
 import React from 'react'
 import { sortBy } from 'lodash'
 
-const SORTS = {
-  NONE: (list: Stories) => list,
-  TITLE: (list: Stories) => sortBy(list, 'title'),
-  AUTHOR: (list: Stories) => sortBy(list, 'author'),
-  COMMENT: (list: Stories) => sortBy(list, 'num_comments').reverse(),
-  POINT: (list: Stories) => sortBy(list, 'points').reverse(),
+type sortsMap = {
+  NONE: (List: Stories) => Stories; 
+  TITLE: (List: Stories) => Stories;
+  AUTHOR: (List: Stories) => Stories;
+  COMMENT: (List: Stories) => Stories;
+  POINT: (List: Stories) => Stories;
 }
-
 type SortKey = 'NONE' | 'TITLE' | 'AUTHOR' | 'COMMENT' | 'POINT'
 
 type Story = {
@@ -32,6 +31,14 @@ type ItemProps = {
   onRemoveItem: (item: Story) => void;
 };
 
+const SORTS: sortsMap= {
+  NONE: (list: Stories) => list,
+  TITLE: (list: Stories) => sortBy(list, 'title'),
+  AUTHOR: (list: Stories) => sortBy(list, 'author'),
+  COMMENT: (list: Stories) => sortBy(list, 'num_comments').reverse(),
+  POINT: (list: Stories) => sortBy(list, 'points').reverse(),
+}
+
 const List: React.FC<ListProps> = React.memo(
   ({ list, onRemoveItem }) => {
     const [sort, setSort] = React.useState('NONE')
@@ -39,6 +46,9 @@ const List: React.FC<ListProps> = React.memo(
     const handleSort = (sortKey: SortKey) => {
       setSort(sortKey)
     }
+
+    const sortFunction = SORTS[sort as keyof sortsMap]
+    const sortedList = sortFunction(list)
 
     return (
     <ul>
@@ -65,7 +75,7 @@ const List: React.FC<ListProps> = React.memo(
         </span>
         <span style={{ width: '10%' }}>Actions</span>
       </li>
-      {list.map((item) => (
+      {sortedList.map((item: Story) => (
         <Item
           key={item.objectID}
           item={item}
