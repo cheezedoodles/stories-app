@@ -1,4 +1,5 @@
 import React from 'react'
+import { sortBy } from 'lodash'
 
 type Story = {
   objectID: string;
