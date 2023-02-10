@@ -22,28 +22,51 @@ type ItemProps = {
 };
 
 const List: React.FC<ListProps> = React.memo(
-    ({ list, onRemoveItem }) => (
-      <ul>
-        <li style={{ display: 'flex' }}>
-          <span style={{ width: '40%' }}>Title</span>
-          <span style={{ width: '30%' }}>Author</span>
-          <span style={{ width: '10%' }}>Comments</span>
-          <span style={{ width: '10%' }}>Points</span>
-          <span style={{ width: '10%' }}>Actions</span>
-        </li>
-        {list.map((item) => (
-          <Item
-            key={item.objectID}
-            item={item}
-            onRemoveItem={onRemoveItem}
-          />
-        ))}
-      </ul>
-    )
-);
+  ({ list, onRemoveItem }) => {
+    const [sort, setSort] = React.useState('NONE')
+
+    const handleSort = (sortKey) => {
+      setSort(sortKey)
+    }
+
+    return (
+    <ul>
+      <li style={{ display: 'flex' }}>
+        <span style={{ width: '40%' }}>
+          <button type="button" onClick={() => handleSort('TITLE')}>
+            Title
+          </button>
+        </span>
+        <span style={{ width: '30%' }}>
+          <button type="button" onClick={() => handleSort('AUTHOR')}>
+            Author
+          </button>
+        </span>
+        <span style={{ width: '10%' }}>
+          <button type="button" onClick={() => handleSort('COMMENT')}>
+            Comments
+          </button>
+        </span>
+        <span style={{ width: '10%' }}>
+          <button type="button" onClick={() => handleSort('POINT')}>
+            Points
+          </button>
+        </span>
+        <span style={{ width: '10%' }}>Actions</span>
+      </li>
+      {list.map((item) => (
+        <Item
+          key={item.objectID}
+          item={item}
+          onRemoveItem={onRemoveItem}
+        />
+      ))}
+    </ul>
+  )
+});
 
 const Item: React.FC<ItemProps> = ({ item, onRemoveItem }) => (
-  <li className='item' style={{ display: 'flex' }}>
+  <li className='item' style={{ display: 'flex'}}>
     <span style={{ width: '40%' }}>
       <a href={item.url}>{item.title} </a>
     </span>
