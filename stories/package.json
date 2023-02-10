@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@testing-library/user-event": "^13.5.0",
+    "@types/lodash": "^4.14.191",
     "@vitejs/plugin-react": "^3.1.0",
     "axios": "^1.2.2",
     "lodash": "^4.17.21",

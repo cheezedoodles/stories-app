@@ -1,6 +1,16 @@
 import React from 'react'
 import { sortBy } from 'lodash'
 
+const SORTS = {
+  NONE: (list: Stories) => list,
+  TITLE: (list: Stories) => sortBy(list, 'title'),
+  AUTHOR: (list: Stories) => sortBy(list, 'author'),
+  COMMENT: (list: Stories) => sortBy(list, 'num_comments').reverse(),
+  POINT: (list: Stories) => sortBy(list, 'points').reverse(),
+}
+
+type SortKey = 'NONE' | 'TITLE' | 'AUTHOR' | 'COMMENT' | 'POINT'
+
 type Story = {
   objectID: string;
   url: string;
@@ -26,7 +36,7 @@ const List: React.FC<ListProps> = React.memo(
   ({ list, onRemoveItem }) => {
     const [sort, setSort] = React.useState('NONE')
 
-    const handleSort = (sortKey) => {
+    const handleSort = (sortKey: SortKey) => {
       setSort(sortKey)
     }
 
