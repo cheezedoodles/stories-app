@@ -31,7 +31,7 @@
   color: inherit;
 }
 
-.button {
+button {
   background: transparent;
   border: 1px solid #171212;
   padding: 5px;
@@ -50,6 +50,10 @@
 
 .button_large {
   padding: 5px;
+}
+
+.list_button:focus {
+  background-color:cornflowerblue;
 }
 
 .search-form {

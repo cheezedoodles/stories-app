@@ -41,6 +41,7 @@ const SORTS: sortsMap= {
 
 const List: React.FC<ListProps> = React.memo(
   ({ list, onRemoveItem }) => {
+
     const [sort, setSort] = React.useState('NONE')
 
     const handleSort = (sortKey: SortKey) => {
@@ -54,22 +55,22 @@ const List: React.FC<ListProps> = React.memo(
     <ul>
       <li style={{ display: 'flex' }}>
         <span style={{ width: '40%' }}>
-          <button type="button" onClick={() => handleSort('TITLE')}>
+          <button className='list_button' type="button" onClick={() => handleSort('TITLE')}>
             Title
           </button>
         </span>
         <span style={{ width: '30%' }}>
-          <button type="button" onClick={() => handleSort('AUTHOR')}>
+          <button className='list_button' type="button" onClick={() => handleSort('AUTHOR')}>
             Author
           </button>
         </span>
         <span style={{ width: '10%' }}>
-          <button type="button" onClick={() => handleSort('COMMENT')}>
+          <button className='list_button' type="button" onClick={() => handleSort('COMMENT')}>
             Comments
           </button>
         </span>
         <span style={{ width: '10%' }}>
-          <button type="button" onClick={() => handleSort('POINT')}>
+          <button className='list_button' type="button" onClick={() => handleSort('POINT')}>
             Points
           </button>
         </span>
