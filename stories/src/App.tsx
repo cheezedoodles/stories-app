@@ -21,10 +21,14 @@ type Story = {
   points: number;
 };
 
-type Stories = Story[];
+type Stories = {
+  list: Story[];
+  page: number
+}
 
 type StoriesState = {
-  data: Stories;
+  data: Stories['list'];
+  page: Stories['page'];
   isLoading: boolean;
   isError: boolean;
 };
@@ -56,6 +60,7 @@ type StoriesAction =
 const API_BASE = 'https://hn.algolia.com/api/v1'
 const API_SEARCH = '/search'
 const PARAM_SEARCH = 'query='
+const PARAM_PAGE = 'page='
 
 const storiesReducer = (
   state: StoriesState, 
@@ -73,7 +78,11 @@ const storiesReducer = (
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload,
+        data: 
+          action.payload.page === 0
+            ? action.payload.list
+            : state.data.concat(action.payload.list),
+        page: action.payload.page,
       };
     case 'STORIES_FETCH_FAILURE':
       return {
@@ -99,8 +108,8 @@ const getSumComments = (stories: StoriesState ) => {
   );
 };
 
-const getUrl = (searchTerm: string) => 
-  `${API_BASE}${API_SEARCH}?${PARAM_SEARCH}${searchTerm}`
+const getUrl = (searchTerm: string, page: number) => 
+  `${API_BASE}${API_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`
 
 const extractSearchTerm = (url: string) => 
   url
@@ -156,11 +165,11 @@ const App = () => {
     'React'
   );
 
-  const [urls, setUrls] = React.useState([getUrl(searchTerm)]);
+  const [urls, setUrls] = React.useState([getUrl(searchTerm, 0)]);
 
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer,
-    { data: [], isLoading: false, isError: false }
+    { data: [], page: 0, isLoading: false, isError: false }
   );
 
   const handleFetchStories = React.useCallback(async () => {
@@ -172,7 +181,10 @@ const App = () => {
 
       dispatchStories({
         type: 'STORIES_FETCH_SUCCESS',
-        payload: result.data.hits,
+        payload: {
+          list: result.data.hits,
+          page: result.data.page,
+        },
       });
     } catch {
       dispatchStories({type: 'STORIES_FETCH_FAILURE'})
@@ -196,15 +208,15 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearch = (searchTerm: string) => {
-    const url = getUrl(searchTerm)
+  const handleSearch = (searchTerm: string, page: number) => {
+    const url = getUrl(searchTerm, page)
     setUrls(urls.concat(url))
   }
 
   const handleSearchSubmit = (
     event: React.FormEvent<HTMLFormElement>
   ) => {
-    handleSearch(searchTerm)
+    handleSearch(searchTerm, 0)
 
     event.preventDefault();
   }
@@ -212,7 +224,13 @@ const App = () => {
   const handleLastSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm)
     
-    handleSearch(searchTerm)
+    handleSearch(searchTerm, 0)
+  }
+
+  const fetchMoreData = () => {
+    const lastUrl = urls[urls.length - 1]
+    const searchTerm = extractSearchTerm(lastUrl)
+    handleSearch(searchTerm, stories.page + 1);
   }
 
   const lastSearches = getLastSearches(urls)
@@ -249,6 +267,10 @@ const App = () => {
           onRemoveItem={handleRemoveStory}
         />
       )}
+
+      <button type="button" onClick={fetchMoreData}>
+        More
+      </button>
     </div>
   );
 };
