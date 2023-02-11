@@ -130,9 +130,7 @@ const App = () => {
     'React'
   );
 
-  const [urls, setUrls] = React.useState([
-    `${API_ENDPOINT}${searchTerm}`,
-  ]);
+  const [urls, setUrls] = React.useState([getUrl(searchTerm)]);
 
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer,
@@ -208,9 +206,9 @@ const App = () => {
         searchFormClassName='button_small'
       />
 
-      {lastSearches.map((url) => (
+      {lastSearches.map((searchTerm, index) => (
         <button 
-          key={searchTerm}
+          key={searchTerm + index}
           type="button"
           onClick={() => handleLastSearch(searchTerm)}
         >
