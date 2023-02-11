@@ -7,6 +7,11 @@ import { SearchForm } from './SearchForm'
 import { List } from './List'
 
 
+type LastSearchesProps = {
+  lastSearches: string[];
+  onLastSearch: (url: string) => void;
+}
+
 type Story = {
   objectID: string;
   url: string;
@@ -23,7 +28,6 @@ type StoriesState = {
   isLoading: boolean;
   isError: boolean;
 };
-
 
 type StoriesFetchInitAction = {
   type: 'STORIES_FETCH_INIT';
@@ -246,9 +250,9 @@ const App = () => {
 };
 
 
-const LastSearches = ({ lastSearches, onLastSearch }) => {
-  <>
-    {lastSearches.map((searchTerm, index) => (
+const LastSearches: React.FC<LastSearchesProps> = 
+  ({ lastSearches, onLastSearch }) => (
+    <div>{lastSearches.map((searchTerm, index) => (
       <button 
         key={searchTerm + index}
         type="button"
@@ -257,9 +261,8 @@ const LastSearches = ({ lastSearches, onLastSearch }) => {
         {searchTerm}
       </button>
     ))}
-  </>
-}
-
+    </div>
+  )
 // Class Component
 // class InputClass extends React.Component {
 //   constructor(props) {
