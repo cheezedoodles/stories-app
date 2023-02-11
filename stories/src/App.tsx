@@ -95,6 +95,11 @@ const getSumComments = (stories: StoriesState ) => {
   );
 };
 
+const extractSearchTerm = (url: string) => url.replace(API_ENDPOINT, '')
+
+const getLastSearches = (urls: string[]) => 
+  urls.slice(-5).map((url) => extractSearchTerm(url))
+
 const useStorageState = (
   key: string, 
   initialState: string
@@ -123,9 +128,9 @@ const App = () => {
     'React'
   );
 
-  const [url, setUrl] = React.useState(
-    `${API_ENDPOINT}${searchTerm}`
-  );
+  const [urls, setUrls] = React.useState([
+    `${API_ENDPOINT}${searchTerm}`,
+  ]);
 
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer,
@@ -136,7 +141,8 @@ const App = () => {
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
     try {
-      const result = await axios.get(url);
+      const lastUrl = urls[urls.length - 1]
+      const result = await axios.get(lastUrl);
 
       dispatchStories({
         type: 'STORIES_FETCH_SUCCESS',
@@ -145,7 +151,7 @@ const App = () => {
     } catch {
       dispatchStories({type: 'STORIES_FETCH_FAILURE'})
     }
-  }, [url])
+  }, [urls])
 
   React.useEffect(() => {
     handleFetchStories();
@@ -167,10 +173,18 @@ const App = () => {
   const handleSearchSubmit = (
     event: React.FormEvent<HTMLFormElement>
   ) => {
-    setUrl(`${API_ENDPOINT}${searchTerm}`);
+    const url = `${API_ENDPOINT}${searchTerm}`
+    setUrls(urls.concat(url));
 
     event.preventDefault();
   }
+
+  const handleLastSearch = (searchTerm: string) => {
+    const url = `${API_ENDPOINT}${searchTerm}`
+    setUrls(urls.concat(url))
+  }
+
+  const lastSearches = getLastSearches(urls)
 
   const sumComments = React.useMemo(
     () => getSumComments(stories),
@@ -188,6 +202,16 @@ const App = () => {
         onSearchSubmit={handleSearchSubmit}
         searchFormClassName='button_small'
       />
+
+      {lastSearches.map((url) => (
+        <button 
+          key={searchTerm}
+          type="button"
+          onClick={() => handleLastSearch(searchTerm)}
+        >
+          {searchTerm}
+        </button>
+      ))}
 
       {stories.isError && <p>Something went wrong ...</p>}
 
