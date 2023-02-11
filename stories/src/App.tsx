@@ -95,6 +95,8 @@ const getSumComments = (stories: StoriesState ) => {
   );
 };
 
+const getUrl = (searchTerm: string) => `${API_ENDPOINT}${searchTerm}`
+
 const extractSearchTerm = (url: string) => url.replace(API_ENDPOINT, '')
 
 const getLastSearches = (urls: string[]) => 
@@ -170,18 +172,21 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleSearch = (searchTerm: string) => {
+    const url = getUrl(searchTerm)
+    setUrls(urls.concat(url))
+  }
+
   const handleSearchSubmit = (
     event: React.FormEvent<HTMLFormElement>
   ) => {
-    const url = `${API_ENDPOINT}${searchTerm}`
-    setUrls(urls.concat(url));
+    handleSearch(searchTerm)
 
     event.preventDefault();
   }
 
   const handleLastSearch = (searchTerm: string) => {
-    const url = `${API_ENDPOINT}${searchTerm}`
-    setUrls(urls.concat(url))
+    handleSearch(searchTerm)
   }
 
   const lastSearches = getLastSearches(urls)
