@@ -34,6 +34,12 @@ type ItemProps = {
   onRemoveItem: (item: Story) => void;
 };
 
+type OrderProps = {
+  sortKey: SortKey;
+  isReverse: boolean;
+  element: SortKey;
+}
+
 const SORTS: sortsMap= {
   NONE: (list: Stories) => list,
   TITLE: (list: Stories) => sortBy(list, 'title'),
@@ -66,45 +72,41 @@ const List: React.FC<ListProps> = React.memo(
       <li style={{ display: 'flex' }}>
         <span style={{ width: '40%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('TITLE')}>
-            {sort.sortKey === 'TITLE' 
-              ? (sort.isReverse 
-                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
-                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
-              : null
-            }
+            <Order 
+              sortKey={sort.sortKey as SortKey} 
+              isReverse={sort.isReverse} 
+              element={'TITLE'}
+            />
             Title
           </button>
         </span>
         <span style={{ width: '30%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('AUTHOR')}>
-          {sort.sortKey === 'AUTHOR' 
-              ? (sort.isReverse 
-                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
-                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
-              : null
-            }
+            <Order 
+              sortKey={sort.sortKey as SortKey} 
+              isReverse={sort.isReverse} 
+              element={'AUTHOR'}
+            />
             Author
           </button>
         </span>
         <span style={{ width: '10%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('COMMENT')}>
-          {sort.sortKey === 'COMMENT' 
-              ? (sort.isReverse 
-                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
-                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
-              : null
-            }
+            <Order 
+              sortKey={sort.sortKey as SortKey} 
+              isReverse={sort.isReverse} 
+              element={'COMMENT'}
+            />
             Comments
           </button>
         </span>
         <span style={{ width: '10%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('POINT')}>
-          {sort.sortKey === 'POINT' 
-              ? (sort.isReverse 
-                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
-                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
-              : null
-            }
+            <Order 
+              sortKey={sort.sortKey as SortKey} 
+              isReverse={sort.isReverse} 
+              element={'POINT'}
+            />
             Points
           </button>
         </span>
@@ -140,5 +142,18 @@ const Item: React.FC<ItemProps> = ({ item, onRemoveItem }) => (
     </span>
   </li>
 );
+
+
+const Order: React.FC<OrderProps> = ({ sortKey, isReverse, element }) => {
+  return (
+  <>
+    {sortKey === element 
+    ? (isReverse 
+      ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
+      : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
+    : null}
+  </>
+  )
+}
 
 export { List, Item }
