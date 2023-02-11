@@ -102,7 +102,10 @@ const getSumComments = (stories: StoriesState ) => {
 const getUrl = (searchTerm: string) => 
   `${API_BASE}${API_SEARCH}?${PARAM_SEARCH}${searchTerm}`
 
-const extractSearchTerm = (url: string) => url.replace(API_ENDPOINT, '')
+const extractSearchTerm = (url: string) => 
+  url
+    .substring(url.lastIndexOf('?') + 1, url.lastIndexOf('&'))
+    .replace(PARAM_SEARCH, '')
 
 const getLastSearches = (urls: string[]) => 
   urls
