@@ -100,7 +100,10 @@ const getUrl = (searchTerm: string) => `${API_ENDPOINT}${searchTerm}`
 const extractSearchTerm = (url: string) => url.replace(API_ENDPOINT, '')
 
 const getLastSearches = (urls: string[]) => 
-  urls.slice(-5).map((url) => extractSearchTerm(url))
+  urls
+    .slice(-6)
+    .slice(0, -1)
+    .map((url) => extractSearchTerm(url))
 
 const useStorageState = (
   key: string, 
