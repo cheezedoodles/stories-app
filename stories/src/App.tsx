@@ -202,6 +202,8 @@ const App = () => {
   }
 
   const handleLastSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm)
+    
     handleSearch(searchTerm)
   }
 
