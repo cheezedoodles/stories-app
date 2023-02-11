@@ -53,9 +53,9 @@ type StoriesAction =
   | StoriesFetchFailureAction
   | StoriesRemoveAction;
 
-
-const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
-
+const API_BASE = 'https://hn.algolia.com/api/v1'
+const API_SEARCH = '/search'
+const PARAM_SEARCH = 'query='
 
 const storiesReducer = (
   state: StoriesState, 
@@ -99,7 +99,8 @@ const getSumComments = (stories: StoriesState ) => {
   );
 };
 
-const getUrl = (searchTerm: string) => `${API_ENDPOINT}${searchTerm}`
+const getUrl = (searchTerm: string) => 
+  `${API_BASE}${API_SEARCH}?${PARAM_SEARCH}${searchTerm}`
 
 const extractSearchTerm = (url: string) => url.replace(API_ENDPOINT, '')
 
@@ -262,7 +263,9 @@ const LastSearches: React.FC<LastSearchesProps> =
       </button>
     ))}
     </div>
-  )
+)
+
+
 // Class Component
 // class InputClass extends React.Component {
 //   constructor(props) {
