@@ -57,10 +57,10 @@ type StoriesAction =
   | StoriesFetchFailureAction
   | StoriesRemoveAction;
 
-const API_BASE = 'https://hn.algolia.com/api/v1'
-const API_SEARCH = '/search'
-const PARAM_SEARCH = 'query='
-const PARAM_PAGE = 'page='
+  const API_BASE = 'https://hn.algolia.com/api/v1';
+  const API_SEARCH = '/search';
+  const PARAM_SEARCH = 'query=';
+  const PARAM_PAGE = 'page=';
 
 const storiesReducer = (
   state: StoriesState, 
@@ -111,31 +111,30 @@ const getSumComments = (stories: StoriesState ) => {
 const getUrl = (searchTerm: string, page: number) => 
   `${API_BASE}${API_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`
 
-const extractSearchTerm = (url: string) => 
+const extractSearchTerm = (url: string) =>
   url
     .substring(url.lastIndexOf('?') + 1, url.lastIndexOf('&'))
-    .replace(PARAM_SEARCH, '')
+    .replace(PARAM_SEARCH, '');
 
-const getLastSearches = (urls: string[]) => 
+const getLastSearches = (urls: string[]) =>
   urls
     .reduce((result: string[], url, index) => {
-      const searchTerm = extractSearchTerm(url)
+      const searchTerm = extractSearchTerm(url);
 
       if (index === 0) {
-        return result.concat(searchTerm)
+        return result.concat(searchTerm);
       }
 
-      const previousSearchTerm = result[result.length - 1]
+      const previousSearchTerm = result[result.length - 1];
 
       if (searchTerm === previousSearchTerm) {
-        return result
+        return result;
       } else {
-        return result.concat(searchTerm)
+        return result.concat(searchTerm);
       }
     }, [])
     .slice(-6)
-    .slice(0, -1)
-    .map((url) => extractSearchTerm(url))
+    .slice(0, -1);
 
 const useStorageState = (
   key: string, 
