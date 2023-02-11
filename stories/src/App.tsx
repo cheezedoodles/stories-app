@@ -226,15 +226,10 @@ const App = () => {
         searchFormClassName='button_small'
       />
 
-      {lastSearches.map((searchTerm, index) => (
-        <button 
-          key={searchTerm + index}
-          type="button"
-          onClick={() => handleLastSearch(searchTerm)}
-        >
-          {searchTerm}
-        </button>
-      ))}
+      <LastSearches
+        lastSearches={lastSearches}
+        onLastSearch={handleLastSearch}
+      />
 
       {stories.isError && <p>Something went wrong ...</p>}
 
@@ -250,6 +245,20 @@ const App = () => {
   );
 };
 
+
+const LastSearches = ({ lastSearches, onLastSearch }) => {
+  <>
+    {lastSearches.map((searchTerm, index) => (
+      <button 
+        key={searchTerm + index}
+        type="button"
+        onClick={() => onLastSearch(searchTerm)}
+      >
+        {searchTerm}
+      </button>
+    ))}
+  </>
+}
 
 // Class Component
 // class InputClass extends React.Component {
