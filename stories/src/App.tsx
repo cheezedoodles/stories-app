@@ -101,6 +101,21 @@ const extractSearchTerm = (url: string) => url.replace(API_ENDPOINT, '')
 
 const getLastSearches = (urls: string[]) => 
   urls
+    .reduce((result: string[], url, index) => {
+      const searchTerm = extractSearchTerm(url)
+
+      if (index === 0) {
+        return result.concat(searchTerm)
+      }
+
+      const previousSearchTerm = result[result.length - 1]
+
+      if (searchTerm === previousSearchTerm) {
+        return result
+      } else {
+        return result.concat(searchTerm)
+      }
+    }, [])
     .slice(-6)
     .slice(0, -1)
     .map((url) => extractSearchTerm(url))
