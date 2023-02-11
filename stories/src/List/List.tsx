@@ -1,6 +1,9 @@
 import React from 'react'
 import { sortBy } from 'lodash'
 
+const upArrow = require('./up.svg').default
+const downArrow = require('./down.svg').default
+
 type sortsMap = {
   NONE: (List: Stories) => Stories; 
   TITLE: (List: Stories) => Stories;
@@ -63,21 +66,45 @@ const List: React.FC<ListProps> = React.memo(
       <li style={{ display: 'flex' }}>
         <span style={{ width: '40%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('TITLE')}>
+            {sort.sortKey === 'TITLE' 
+              ? (sort.isReverse 
+                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
+                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
+              : null
+            }
             Title
           </button>
         </span>
         <span style={{ width: '30%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('AUTHOR')}>
+          {sort.sortKey === 'AUTHOR' 
+              ? (sort.isReverse 
+                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
+                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
+              : null
+            }
             Author
           </button>
         </span>
         <span style={{ width: '10%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('COMMENT')}>
+          {sort.sortKey === 'COMMENT' 
+              ? (sort.isReverse 
+                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
+                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
+              : null
+            }
             Comments
           </button>
         </span>
         <span style={{ width: '10%' }}>
           <button className='list_button' type="button" onClick={() => handleSort('POINT')}>
+          {sort.sortKey === 'POINT' 
+              ? (sort.isReverse 
+                ? <img style={{ width: '10px' }} src={upArrow} alt='up' />
+                : <img style={{ width: '10px' }} src={downArrow} alt='down' />)
+              : null
+            }
             Points
           </button>
         </span>
