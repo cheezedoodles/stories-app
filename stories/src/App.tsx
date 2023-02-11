@@ -259,18 +259,18 @@ const App = () => {
 
       {stories.isError && <p>Something went wrong ...</p>}
 
-      {stories.isLoading ? (
-        <p>Loading ...</p>
-      ) : (
-        <List
+      <List
           list={stories.data}
           onRemoveItem={handleRemoveStory}
         />
-      )}
 
-      <button type="button" onClick={fetchMoreData}>
-        More
-      </button>
+      {stories.isLoading ? (
+        <p>Loading ...</p>
+      ) : (
+        <button type="button" onClick={fetchMoreData}>
+          More
+        </button>
+      )}
     </div>
   );
 };
